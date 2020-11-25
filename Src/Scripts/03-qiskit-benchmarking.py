@@ -158,11 +158,10 @@ def normalize_data(DATA_PATH = "../../Data/Processed/data.csv"):
 
 def main():
     data = {}
-    feature_maps = ['ZZFeatureMap(4, reps=1)', 'ZFeatureMap(4, reps=1)', 'PauliFeatureMap(4, reps=1)']
-    # feature_maps = ['ZZFeatureMap(4, reps=1)', 'ZZFeatureMap(4, reps=2)', 'ZZFeatureMap(4, reps=4)',
-    #                 'ZFeatureMap(4, reps=1)', 'ZFeatureMap(4, reps=2)', 'ZFeatureMap(4, reps=4)',
-    #                 'PauliFeatureMap(4, reps=1)', 'PauliFeatureMap(4, reps=2)', 'PauliFeatureMap(4, reps=4)']
-    optimizers = ["COBYLA(maxiter=3)", "SPSA(max_trials=3)", "ADAM(maxiter=3)"]
+    feature_maps = ['ZZFeatureMap(4, reps=1)', 'ZZFeatureMap(4, reps=2)', 'ZZFeatureMap(4, reps=4)',
+                    'ZFeatureMap(4, reps=1)', 'ZFeatureMap(4, reps=2)', 'ZFeatureMap(4, reps=4)',
+                    'PauliFeatureMap(4, reps=1)', 'PauliFeatureMap(4, reps=2)', 'PauliFeatureMap(4, reps=4)']
+    optimizers = ["COBYLA(maxiter=50)", "SPSA(max_trials=50)", "ADAM(maxiter=50)"]
     X_train, X_test, Y_train, Y_test = normalize_data()
     for fe in feature_maps:
         for i in [1, 3, 5]:
