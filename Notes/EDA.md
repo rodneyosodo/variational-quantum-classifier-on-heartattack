@@ -11,6 +11,15 @@ My goal through this project are:
 - Get a firm understaning on quantum machine learning
 - explore the loss landscape of variational models
 
+My project plan is to ;
+1. Explore the data and preprocessing it.
+2. Create quantum neural network, combine featuremap, variational circuit and measurement parts
+3. Explore different types of optimizers, featuremaps, depths of featuremaps and depths of variational circuit.
+4. Explain my observations based on the first 10 model configs.
+5. Characterise the loss landscape of the best models.
+
+These are some of my finds and I hope we share the same idea about them. 
+
 # Exploratory Data Analysis
 
 Exploratory Data Analysis (EDA) refers to the critical prcess of performing initial investigations on a dataset so as to dicover patterns, spot anomalies, test hypothesis and check assumptions.
