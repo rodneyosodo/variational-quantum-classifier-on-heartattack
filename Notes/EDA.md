@@ -158,6 +158,8 @@ We first check the correlation of the columns to th target variable
 data.drop('num', axis=1).corrwith(data['num']).plot(kind='bar', grid=True, figsize=(12, 8), title="Correlation with target")
 
 ```
+![Correltion](../Output/Figures/correlation.png)
+
 
 We see that exang has the highest prositive correlation followed by oldpeak and then cp. Thalach has the highest negative correlations.
 
