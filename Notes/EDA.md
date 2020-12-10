@@ -60,6 +60,8 @@ We see that sex, cp , fbs, exang, oldpeak, slope, ca , thal and num are categori
 
 When we look at the target distribution we can see that they are almost balanced since one of the classes isn't more than 2/3 of the dataset.
 
+![Age distribution](../Output/Figures/agedist.png)
+
 
 
 ## Data cleaning
