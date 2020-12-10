@@ -64,6 +64,7 @@ When we look at the target distribution we can see that they are almost balanced
 
 When we look at the age distribution we see that most of the people are male
 
+![Heart disease and ages](../Output/Figures/heartDiseaseAndAges.png) 
 
 
 ## Data cleaning
