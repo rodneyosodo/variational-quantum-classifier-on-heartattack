@@ -6,7 +6,7 @@ It it usually a good practise in data science to explore the data first before g
 My EDA process was short as the series topic alluded earlier, I would like to focus on Quantum Machine Learning rather than dwell on data science.
 
 ## Data explorations
-to start of we imported necessary libraries, pandas, numpy, matplotlip and pandas profiling and loaded our dataset
+To start of we imported necessary libraries, pandas, numpy, matplotlib, seaborn and pandas profiling and loaded our dataset
 
 ```python
 data = pd.read_csv(DATA_PATH)
