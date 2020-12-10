@@ -62,6 +62,8 @@ When we look at the target distribution we can see that they are almost balanced
 
 ![Age distribution](../Output/Figures/agedist.png)
 
+When we look at the age distribution we see that most of the people are male
+
 
 
 ## Data cleaning
