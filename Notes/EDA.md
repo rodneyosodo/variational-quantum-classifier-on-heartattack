@@ -70,6 +70,7 @@ We can definitely see ad you age you are more prone to heart attack until age of
 
 ![Pair plot](../Output/Figures/pairplot.png)
 
+This pairplot shows us the distributionof every class.
 
 ## Data cleaning
 1. We first change the column name or the target variables as it has ore spaces
