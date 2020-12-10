@@ -1,5 +1,9 @@
 # Quantum Open Source Foundation project
 Hello world, this is my quantum open source project on building a quantum variational classifier using the heart attack dataset. This will be a series of blogs in the order of:
+1. Classical preprocessing, this one
+2. Explaining the workings of a variational quantum model
+3. Explain my finds and look at the best models
+4. Characterising loss landscapes
 
 # Exploratory Data Analysis
 
