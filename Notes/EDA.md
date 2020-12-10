@@ -1,3 +1,6 @@
+# Quantum Open Source Foundation project
+Hello world, this is my quantum open source project on building a quantum variational classifier using the heart attack dataset. This will be a series of blogs in the order of:
+
 # Exploratory Data Analysis
 
 Exploratory Data Analysis (EDA) refers to the critical prcess of performing initial investigations on a dataset so as to dicover patterns, spot anomalies, test hypothesis and check assumptions.
