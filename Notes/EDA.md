@@ -5,6 +5,12 @@ Hello world, this is my quantum open source project on building a quantum variat
 3. Explain my finds and look at the best models
 4. Characterising loss landscapes
 
+My goal through this project are:
+- Learn how variational circuit work
+- Explore the different types of optimizers
+- Get a firm understaning on quantum machine learning
+- explore the loss landscape of variational models
+
 # Exploratory Data Analysis
 
 Exploratory Data Analysis (EDA) refers to the critical prcess of performing initial investigations on a dataset so as to dicover patterns, spot anomalies, test hypothesis and check assumptions.
