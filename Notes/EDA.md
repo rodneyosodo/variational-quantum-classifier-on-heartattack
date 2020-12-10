@@ -56,6 +56,9 @@ def check_unique(df):
 ```
 We see that sex, cp , fbs, exang, oldpeak, slope, ca , thal and num are categorical variables while the others are continuous. This will help us when deciding which values to fill in the null spaces
 
+![Targets distribution](../Output/Figures/targetdist.png)
+
+
 
 ## Data cleaning
 1. We first change the column name or the target variables as it has ore spaces
