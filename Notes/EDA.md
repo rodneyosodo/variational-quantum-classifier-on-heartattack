@@ -66,6 +66,8 @@ When we look at the age distribution we see that most of the people are male
 
 ![Heart disease and ages](../Output/Figures/heartDiseaseAndAges.png) 
 
+We can definitely see ad you age you are more prone to heart attack until age of 57 where your chances start reducing. At the age of 54 is the age where most people are liable to heart attack.
+
 
 ## Data cleaning
 1. We first change the column name or the target variables as it has ore spaces
