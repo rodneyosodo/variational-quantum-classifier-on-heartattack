@@ -172,3 +172,22 @@ pp.ProfileReport(df=data, dark_mode=True, explorative=True)
 From the overview we are able to see we have to warnings which we will ignore.
 1. `df_index` has unique values. This is beacues it is the index column so it has all unique values
 2. `oldpeak` has 188 (64.2%) zeros. The data is not normalized hence most values are 0
+
+
+## Next steps
+1. We shuffle the data to introduce some randomness: we maintain the same random state for all operations
+2. We remove less relevant features and remain with the top 4 features, 3 postively correlated with the target variable and 1 negatively correlated with the target variable.
+3. We normalize the data using `sklearn.preprocessing.MinMaxScaler` between ranges `-2 pi and 2 pi`. This is to ensure we utilize most of the Hilbert space as we will be encoding the data into quantum states.
+4. We finally split the data into train and test sets, keeping the test size to 0.3
+
+```python
+def normalize_data(dataPath="../../Data/Processed/data.csv"):
+    data = pd.read_csv(dataPath)
+    data = shuffle(data, random_state=42)
+    X, Y = data[['sex', 'cp', 'exang', 'oldpeak']].values, data['num'].values
+    # normalize the data
+    scaler = MinMaxScaler(feature_range=(-2 * np.pi, 2 * np.pi))
+    X = scaler.fit_transform(X)
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
+    return X_train, X_test, Y_train, Y_test
+```
