@@ -42,7 +42,7 @@ class Benchmark:
         self.random_state = 42
         self.class_labels = ['yes', 'no']
         self.circuit = None
-        self.sv = Statevector.from_label('0' * self.no_qubit)
+        self.sv = Statevector.from_label('0' * 4)
         self.X_train, self.X_test, self.Y_train, self.Y_test = X_train, X_test, Y_train, Y_test
         self.cost_list = []
 
