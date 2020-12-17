@@ -142,6 +142,13 @@ ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.14830080135566964
 ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.14946706294763648
 ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414}
 ```
+## Questions
+#### 1. Does increasing variational depth increase convergence?
+- When increasing vdepth on `ZZFeatureMap(4, reps=1) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) ADAM(maxiter=50)` and `PauliFeatureMap(4, reps=2) ADAM(maxiter=50)` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
+
+#### 2. Does increasing featuremap depth increase convergence?
+- When increasing fdepth on `ZZFeatureMap ADAM (maxiter=50) vdepth 5` and `PauliFeatureMap ADAM(maxiter=50) vdepth 5` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
+
 
 ## Conclusion
 Heart attack is a major concern in public health, therefore several research efforts have been conducted including topics that are addressed using statistics, data mining and machine learning techniques. Every year more data is becoming available from the increased diagnosis rate. The data availability has lead to the emergence from Machine learning methods, which are nowadays an extremely valuable tool for healthcare professionals to understand and mitigate this and
