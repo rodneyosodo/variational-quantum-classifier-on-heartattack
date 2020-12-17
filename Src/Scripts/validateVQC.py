@@ -34,7 +34,6 @@ class Benchmark:
         :param Y_train: The y data for training
         :param Y_test: The y data for testing
         """
-        self.var_form = RealAmplitudes(self.no_qubit, reps=self.variational_depth)
         self.optimizer = optimizer
         self.variational_depth = variational_depth
         self.feature_map = feature_map
@@ -42,6 +41,7 @@ class Benchmark:
         self.random_state = 42
         self.class_labels = ['yes', 'no']
         self.circuit = None
+        self.var_form = RealAmplitudes(self.no_qubit, reps=self.variational_depth)
         self.sv = Statevector.from_label('0' * 4)
         self.X_train, self.X_test, self.Y_train, self.Y_test = X_train, X_test, Y_train, Y_test
         self.cost_list = []
