@@ -6,29 +6,28 @@ Hello world, this is my quantum open source project on building a quantum variat
 4. Characterising loss landscapes
 
 My goal through this project are:
-- Learn how variational circuit work
+- Learn how a variational circuit works
 - Explore the different types of optimizers
-- Get a firm understaning on quantum machine learning
-- explore the loss landscape of variational models
+- Get a firm understaning of quantum machine learning
+- Explore the loss landscape of variational models
 
-My project plan is to ;
-1. Explore the data and preprocessing it.
-2. Create quantum neural network, combine featuremap, variational circuit and measurement parts
-3. Explore different types of optimizers, featuremaps, depths of featuremaps and depths of variational circuit.
-4. Explain my observations based on the first 10 model configs.
-5. Characterise the loss landscape of the best models.
+My project plan is to:
+1. Explore a specific dataset and preprocess it.
+2. Create a quantum neural network (AKA variational classifier) by combining a featuremap, variational circuit and measurement component.
+3. Explore different types of optimizers, featuremaps, depths of featuremaps and depths of the variational circuit.
+4. Explain my observations based on the best 10 model configurations.
+5. Try to understand why these models performed the best by characterising the loss landscape of the best models.
 
-These are some of my finds and I hope we share the same idea about them. 
+These are some of my findings and I hope we share the same idea about them. 
 
 # Exploratory Data Analysis
 
-Exploratory Data Analysis (EDA) refers to the critical prcess of performing initial investigations on a dataset so as to dicover patterns, spot anomalies, test hypothesis and check assumptions.
-It it usually a good practise in data science to explore the data first before getting your hand dirty and starting to build models.
+Exploratory Data Analysis (EDA) refers to the critical prcess of performing initial investigations on a dataset so as to dicover patterns, spot anomalies, test hypotheses and check assumptions. It it usually good practice in data science to explore the data first before getting your hands dirty and starting to build models.
 
-My EDA process was short as the series topic alluded earlier, I would like to focus on Quantum Machine Learning rather than dwell on data science.
+My EDA process was short as the series topic alluded earlier, I would like to focus on Quantum Machine Learning rather than dwell on data science!
 
 ## Data explorations
-To start of we imported necessary libraries, pandas, numpy, matplotlib, seaborn and pandas profiling and loaded our dataset
+To start off, we imported necessary libraries: pandas, numpy, matplotlib, seaborn and pandas profiling, and loaded our dataset
 
 ```python
 data = pd.read_csv(DATA_PATH)
@@ -36,8 +35,7 @@ data = pd.read_csv(DATA_PATH)
 
 The original dataset can be found [here](https://www.kaggle.com/imnikhilanand/heart-attack-prediction). 
 
-We then check the shape of the datset and find we have 14 columns that is 13 features and one target variable. We have 294 rows that is we have 294 datapoint on which we will use to train our model.
-When we check our columns we see the actual names. The explanations of the each columns is:
+We then check the shape of the datset and found that we have 14 columns that is 13 features and one target variable. We have 294 rows that means we have 294 datapoints on which we will use to train our model. When we check our columns we see the actual names in the heading. The explanations of the each column is as follows:
 
 ```python
 print(data.columns)
@@ -62,9 +60,9 @@ Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exa
 - THAL (3 = normal; 6 = fixed defect; 7 = reversable defect)
 - num ==> TARGET (1 or 0)
 
-when we check the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will try and fix this later on.
+When we look at the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will also need to fix this later on. (@Rodney - please explain why)
 
-We then check the unique values of each columns
+We then check the unique values of each column, 
 ```python
 def check_unique(df):
     """"
@@ -76,7 +74,7 @@ def check_unique(df):
         print("Column: {} has {} unique values\n".format(col, unique))
 
 ```
-We see that sex, cp , fbs, exang, oldpeak, slope, ca , thal and num are categorical variables while the others are continuous. This will help us when deciding which values to fill in the null spaces
+we see that sex, cp , fbs, exang, oldpeak, slope, ca , thal and num are categorical variables while the others are continuous. This will help us when deciding which values to fill in the null spaces
 
 ![Targets distribution](../Output/Figures/targetdist.png)
 
