@@ -62,7 +62,7 @@ Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exa
 
 When we look at the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will also need to fix this later on. (@Rodney - please explain why)
 
-We then check the unique values of each column, 
+When we check the unique values of each column, 
 ```python
 def check_unique(df):
     """"
@@ -74,31 +74,31 @@ def check_unique(df):
         print("Column: {} has {} unique values\n".format(col, unique))
 
 ```
-we see that sex, cp , fbs, exang, oldpeak, slope, ca , thal and num are categorical variables while the others are continuous. This will help us when deciding which values to fill in the null spaces
+we see that sex, cp , fbs, exang, oldpeak, slope, ca, thal and num are categorical variables, while the others are continuous variables. This will help inform us when deciding how to fill values with null spaces.
 
 ![Targets distribution](../Output/Figures/targetdist.png)
 
-When we look at the target distribution we can see that they are almost balanced since one of the classes isn't more than 2/3 of the dataset.
+When we look at the target distribution, we can see that they are almost balanced, since one of the classes isn't more than 2/3 of the dataset.
 
 ![Age distribution](../Output/Figures/agedist.png)
 
-When we look at the age distribution we see that most of the people are male
+When we look at the age distribution we see that most of the people are male:
 
 ![Heart disease and ages](../Output/Figures/heartDiseaseAndAges.png) 
 
-We can definitely see ad you age you are more prone to heart attack until age of 57 where your chances start reducing. At the age of 54 is the age where most people are liable to heart attack.
+We can definitely see that as you age, you are more prone to a heart attack until the age of 57, where your chances start reducing. At the age of 54 is the peak age where most people are susceptible to a heart attack.
 
 ![Pair plot](../Output/Figures/pairplot.png)
 
-This pairplot shows us the distributionof every class.
+This pairplot shows us the distribution of every class.
 
 ## Data cleaning
-1. We first change the column name or the target variables as it has ore spaces
+1. We first change the column name and the target variable as it has spaces
 
 ```python
 data = data.rename(columns={'num       ':'num'})
 ```
-2. We then change the `?` in the data to be `np.Nan` since they are null values.
+2. We then change the `?` in the data to be `np.Nan` since they are null values. (@Rodney - maybe just say this is one way to handle this problem)
 
 ```python
 def fix_missing_values(df):
@@ -115,7 +115,7 @@ def fix_missing_values(df):
                 df[col][i] = np.NaN
     return df
 ```
-3. We change the data tyoe of the `object` to `float64`
+3. We change the data type of the `object` to `float64`
 
 ```python
 def change_dtype(df):
@@ -130,19 +130,19 @@ def change_dtype(df):
             df[col] = df[col].astype("float64")
     return df
 ```
-4. Fixing mixing values
+4. Fixing mixing values:
 
-We will delete the columns with more than a half or its members empty
+We will delete the columns with more than half of its members empty (@Rodney - why? You need to explain these design choices with just a sentence or so)
 - ca
 - thal
 - slope
 
-This we wil fix with the mean value since the value random values
+This we wil fix with the mean value since the value random values (@Rodney I dont understand what this means)
 - trestbps
 - chol
 - thalach
 
-This we will fix with the mode value since they are either `0` or `1`
+This we will fix with the mode value since they are either `0` or `1` 
 - fbs
 - exang
 - restecg
@@ -188,7 +188,9 @@ data.drop_duplicates(inplace=True)
 ```
 
 ## Profiling
-We first check the correlation of the columns to th target variable
+@Rodney maybe explain what profiling is, in a sentence or two?
+
+We first check the correlation of the columns to the target variable:
 ```python
 data.drop('num', axis=1).corrwith(data['num']).plot(kind='bar', grid=True, figsize=(12, 8), title="Correlation with target")
 
@@ -196,26 +198,26 @@ data.drop('num', axis=1).corrwith(data['num']).plot(kind='bar', grid=True, figsi
 ![Correltion](../Output/Figures/correlation.png)
 
 
-We see that exang has the highest prositive correlation followed by oldpeak and then cp. Thalach has the highest negative correlations.
+We see that exang has the highest prositive correlation followed by oldpeak and then cp. Thalach has the highest negative correlation.
 
-This 4 features are the ones we will use as the other ones have little impact on the target variable. 
+These 4 features are the ones we will use as the other ones have little impact on the target variable. (@Rodney this is a very bold statement to make. Maybe state "looking at the correlations, these 4 variables seem to be the most relevant and hence, we choose them as our features for our analysis")
 
-We finish of by checking the pandas profiling
+We finish off by checking the pandas profiling:
 
 ```python
 pp.ProfileReport(df=data, dark_mode=True, explorative=True)
 ```
 
-From the overview we are able to see we have to warnings which we will ignore.
-1. `df_index` has unique values. This is beacues it is the index column so it has all unique values
-2. `oldpeak` has 188 (64.2%) zeros. The data is not normalized hence most values are 0
+From the overview we are able to see we have to warnings which we will ignore. (@Rodney why? please explain)
+1. `df_index` has unique values. This is beacues it is the index column so it has all unique values.
+2. `oldpeak` has 188 (64.2%) zeros. The data is not normalized hence most values are 0.
 
 
 ## Next steps
-1. We shuffle the data to introduce some randomness: we maintain the same random state for all operations
+1. We shuffle the data to introduce some randomness: we maintain the same random state for all operations.
 2. We remove less relevant features and remain with the top 4 features, 3 postively correlated with the target variable and 1 negatively correlated with the target variable.
 3. We normalize the data using `sklearn.preprocessing.MinMaxScaler` between ranges $-2\pi$ and $2\pi$. This is to ensure we utilize most of the Hilbert space as we will be encoding the data into quantum states.
-4. We finally split the data into train and test sets, keeping the test size to 0.3
+4. We finally split the data into train and test sets, keeping the test size to 0.3.
 
 ```python
 def normalize_data(dataPath="../../Data/Processed/data.csv"):
@@ -229,4 +231,4 @@ def normalize_data(dataPath="../../Data/Processed/data.csv"):
     return X_train, X_test, Y_train, Y_test
 ```
 
-# Lets move to the next blog, Explaining the workings of a variational quantum model
+# Lets move to the next blog: "Explaining the workings of a variational quantum model"
