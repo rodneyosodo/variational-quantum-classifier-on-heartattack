@@ -4,10 +4,10 @@ By now you know how a variational quantum classifier works. The code for the pre
 
 
 ## Introduction
-In binary classification, let's say labelling if someone is likely to have heart attack or not , we build a function that takes in the information about the patient and gives results possible to the reality. E.g, $f(information) = P(hear attack = YES)$. This probabilistic way is well suited for quantum computing and we would like to build a quantum states $\left| \psi \right\rangle$ such that $\left| \psi(information)\right\rangle = P(heart attack = YES) \left| 0\right\rangle + P(heart attack = NO) \left| 1\right\rangle$. We then compute the outcome via quantum measurement. By optimising the circuits you then finding parameters that will give the closest probability to the reality. 
+In binary classification, let's say labelling if someone is likely to have a heart attack or not, we would build a function that takes in the information about the patient and gives results aligned to the reality. E.g, $f(information) = P(hear attack = YES)$. This probabilistic classification is well suited for quantum computing and we would like to build a quantum state $\left| \psi \right\rangle$ such that $\left| \psi(information)\right\rangle = P(heart attack = YES) \left| 0\right\rangle + P(heart attack = NO) \left| 1\right\rangle$. We then compute the outcome via quantum measurement. By optimising the circuits you then find parameters that will give the closest probability to the reality. 
 
 ## Problem statement
-Given a dataset about patient's information can we predict if he is likely going to have heart attack or no.This is a binary classification problem, with an input real vector ${x}$ and a binary output ${y}$ in $\{0, 1\}$. We want then to build a quantum circuit whose output is a quantum state 
+Given a dataset about patient's information, can we predict if the patient is likely to have a heart attack or not? This is a binary classification problem, with an input real vector ${x}$ and a binary output ${y}$ in $\{0, 1\}$. We want to build a quantum circuit whose output is the quantum state: 
 ![](../Notes/findings/math-7.png)
 
 ## Procedure
@@ -26,9 +26,9 @@ Implementation
 ```python
 self.sv = Statevector.from_label('0' * self.no_qubit)
 ```
-2. We use a higher order feature map, `ZZFeaturemap, ZFeaturemap and PauliFeaturemap` and specify the number of qubits and also how many repetions we want, 1, 3, 5.
+2. We use a higher order feature map, `ZZFeaturemap, ZFeaturemap` and `PauliFeaturemap` and specify the number of qubits and also how many repetitions we want: 1, 3, 5.
 
-3. We specify the variational from as `RealAmplitude` and specify the number of qubits and also how many repetions we want, 1, 2, 4.
+3. We specify the variational form as `RealAmplitudes` and specify the number of qubits and also how many repetitions we want: 1, 2, 4.
 
 4. We then combine our feature map to the variational quantum circuit.
 `ZZfeaturemap and RealAmplitudes both with a depth of 1`
@@ -40,7 +40,7 @@ def prepare_circuit(self):
     """
     self.circuit = self.feature_map.combine(self.var_form)
 ```
-5. We create a function to that associates the parameters of the feature map with the data and the parameters of the variational circuit with the parameters passed
+5. We create a function that associates the parameters of the feature map with the data and the parameters of the variational circuit with the parameters passed
 ```python
 def get_data_dict(self, params, x):
     """
@@ -61,7 +61,7 @@ def get_data_dict(self, params, x):
 ![](../Output/Figures/parameterisedcircuit.png)
 
 
-6. We create another functions that checks the parity of the bit string passed. hence if the parity is even it returns a yes and if the parity is odd it returns a no
+6. We create another function that checks the parity of the bit string passed. Hence if the parity is even it returns a yes and if the parity is odd it returns a no @Rodney please explain why this choice and that other options exist
 ```python
 def assign_label(self, bit_string):
     """
@@ -76,7 +76,7 @@ def assign_label(self, bit_string):
     else:
         return self.class_labels[0]
 ```
-7.  We create another functions that returns the probability distribution over the model classes
+7.  We create another function that returns the probability distribution over the model classes  @Rodney why?? You need to explain these steps to help people understand more.
 ```python
 def return_probabilities(self, counts):
     """
@@ -93,7 +93,7 @@ def return_probabilities(self, counts):
         result[label] += counts[key] / shots
     return result
 ```
-8.   We create another functions that classifies our data. It takes in data and parameters. For every data point in the dataset we assign the parameters to the feature map and the parameters to the variational circuit. We then evolve our system and store the quantum circuit. We then measure each circuit and return the probabilities based on the bit string and class labels
+8.   Finally, we create a function that classifies our data. It takes in data and parameters. For every data point in the dataset we assign the parameters to the feature map and the parameters to the variational circuit. We then evolve our system and store the quantum circuit. We measure each circuit and return the probabilities based on the bit string and class labels  @Rodney please explain more why we store multiple circuits
 ```python
 def classify(self, x_list, params):
     """
@@ -129,7 +129,7 @@ qiskit-ignis==0.5.1
 qiskit-terra==0.16.1
 ```
 
-Every combination of the experiments were executed 1024 shots, using the implemented version of the optimizers. We conducted tests with different number of feature map depth, variational depth and optimizers. In each case we compared the accuracy and loss. Our best configs were 
+Every combination of the experiments were executed with 1024 shots, using the implemented version of the optimizers. We conducted tests with different feature map depths, variational depths and optimizers. In each case, we compared loss values. Our best configs were 
 ```python
 ZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 5 : Cost: 0.13492279429495616
 ZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 3 : Cost: 0.13842958846394343
@@ -142,6 +142,8 @@ ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.14830080135566964
 ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.14946706294763648
 ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414}
 ```
+
+@Rodney you need to elaborate more here. This is the most important part of the entire project
 ## Questions
 #### 1. Does increasing variational depth increase convergence?
 - When increasing vdepth on `ZZFeatureMap(4, reps=1) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) ADAM(maxiter=50)` and `PauliFeatureMap(4, reps=2) ADAM(maxiter=50)` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
@@ -150,8 +152,6 @@ ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414}
 - When increasing fdepth on `ZZFeatureMap ADAM (maxiter=50) vdepth 5` and `PauliFeatureMap ADAM(maxiter=50) vdepth 5` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
 
 
+@Rodney, you should also start with a nice motivation in the first notebook as to why we used heart attack data
 ## Conclusion
-Heart attack is a major concern in public health, therefore several research efforts have been conducted including topics that are addressed using statistics, data mining and machine learning techniques. Every year more data is becoming available from the increased diagnosis rate. The data availability has lead to the emergence from Machine learning methods, which are nowadays an extremely valuable tool for healthcare professionals to understand and mitigate this and
-other conditions. The next stage will continue to explore the different loss landscapes of our top 5 models. In general, VQC results demonstrate that it is a promising technique
-when quantum devices grown its capabilities, attending the future necessities of
-the healthcare system.
+Heart attack is a major concern in public health, therefore several research efforts have been conducted including topics that are addressed using statistics and data mining. Every year more data is becoming available from the increased diagnosis rate. The data availability has lead to the emergence of machine learning methods, which are nowadays an extremely valuable tool for healthcare professionals to make and understand diagnoses and mitigate risks. In general, VQC results demonstrate that it is a promising technique when quantum devices grow in its capabilities, attending the future necessities of the healthcare system.
