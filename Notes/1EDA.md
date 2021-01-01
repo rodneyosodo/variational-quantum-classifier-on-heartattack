@@ -100,7 +100,7 @@ This pairplot shows us the distribution of every class.
 ```python
 data = data.rename(columns={'num       ':'num'})
 ```
-2. We then change the `?` in the data to be `np.Nan` since they are null values. (@Rodney - maybe just say this is one way to handle this problem)
+2. When we check the values we see that the null values were recorded as `?` in the dataset. One way of handling this is to change the `?` in the data to be `np.Nan`. (@Rodney - maybe just say this is one way to handle this problem)
 
 ```python
 def fix_missing_values(df):
