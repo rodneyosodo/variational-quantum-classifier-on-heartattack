@@ -140,7 +140,7 @@ We will delete the columns with more than half of its members empty. This is bec
 - thal
 - slope
 
-This we wil fix with the mean value since the value random values (@Rodney I dont understand what this means)
+Columns that have continuous values and the null values are not less than half, we try and fix this by either replacing with the mean, mode or median. For our case I used mean values. (@Rodney I dont understand what this means)
 - trestbps
 - chol
 - thalach
