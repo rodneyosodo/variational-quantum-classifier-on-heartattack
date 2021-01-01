@@ -62,7 +62,7 @@ Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exa
 - THAL (3 = normal; 6 = fixed defect; 7 = reversable defect)
 - num ==> TARGET (1 or 0)
 
-When we look at the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will also need to fix this later on. (@Rodney - please explain why)
+When we look at the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will also need to fix this later on. This is because a dtype `object` can't be understood by our model. As our model only understands numerical values e.g float and integers. (@Rodney - please explain why)
 
 When we check the unique values of each column, 
 ```python
