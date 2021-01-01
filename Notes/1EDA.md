@@ -135,7 +135,7 @@ def change_dtype(df):
 4. Fixing mixing values:
 Handling missing data in Machine Learning is important as it may lead to drawing inaccurate inference from the data.
 
-We will delete the columns with more than half of its members empty (@Rodney - why? You need to explain these design choices with just a sentence or so)
+We will delete the columns with more than half of its members empty. This is because if we try and fill them most of the values will be having more fabricated values than the real values. (@Rodney - why? You need to explain these design choices with just a sentence or so)
 - ca
 - thal
 - slope
