@@ -191,6 +191,7 @@ data.drop_duplicates(inplace=True)
 ```
 
 ## Profiling
+One way of doing better and faster Exploratory Data Analysis in a very short time is to use pandas profiling. It basically returns and interactive report in HTML format which is quick to analyse the data.
 @Rodney maybe explain what profiling is, in a sentence or two?
 
 We first check the correlation of the columns to the target variable:
