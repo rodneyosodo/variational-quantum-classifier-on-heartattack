@@ -18,6 +18,8 @@ My project plan is to:
 4. Explain my observations based on the best 10 model configurations.
 5. Try to understand why these models performed the best by characterising the loss landscape of the best models.
 
+For this project we decided to use the heart attack data as our baseline. This is because, in medical aspects, heart attack is the leading disease that causes death. In computation aspect, the data was rather small and could easily be fitted on NISQ computers.
+
 These are some of my findings and I hope we share the same idea about them. 
 
 # Exploratory Data Analysis
