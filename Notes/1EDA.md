@@ -204,7 +204,7 @@ data.drop('num', axis=1).corrwith(data['num']).plot(kind='bar', grid=True, figsi
 
 We see that exang has the highest prositive correlation followed by oldpeak and then cp. Thalach has the highest negative correlation.
 
-These 4 features are the ones we will use as the other ones have little impact on the target variable. (@Rodney this is a very bold statement to make. Maybe state "looking at the correlations, these 4 variables seem to be the most relevant and hence, we choose them as our features for our analysis")
+Based on the correlation of the features with the target variable, we chose the first 4 positively highly correlated features. (@Rodney this is a very bold statement to make. Maybe state "looking at the correlations, these 4 variables seem to be the most relevant and hence, we choose them as our features for our analysis")
 
 We finish off by checking the pandas profiling:
 
