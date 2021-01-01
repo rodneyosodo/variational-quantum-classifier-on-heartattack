@@ -212,7 +212,7 @@ We finish off by checking the pandas profiling:
 pp.ProfileReport(df=data, dark_mode=True, explorative=True)
 ```
 
-From the overview we are able to see we have to warnings which we will ignore. (@Rodney why? please explain)
+From the overview we are able to see we have to warnings which we will ignore. (@Rodney why? please explain) (@amyami187 already explained in the list below)
 1. `df_index` has unique values. This is beacues it is the index column so it has all unique values.
 2. `oldpeak` has 188 (64.2%) zeros. The data is not normalized hence most values are 0.
 
