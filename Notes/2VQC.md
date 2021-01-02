@@ -2,6 +2,17 @@
 
 Quantum machine learning is usually machine learning that runs on quantum computers. A normal quantum machine learning model is composed of 2 parts, a classical part for post and pre processing and a quantum part for harnessing the power to perform certain calculations easily such as extremely large systems of linear equations. One of the main motivations is because it is difficult to train machine learning models on huge datasets. The hope is that features of quantum computing such as quantum parallelism or the effects of interference and entanglement can be used as resources. (@Rodney - if you have used any resources like wikipedia etc, we must reference them)
 
+
+<!-- ![](../Notes/explanation/feedforwardnn1.png)
+*From: https://ujjwalkarn.me/2016/08/09/quick-intro-neural-networks/* -->
+![](../Notes/explanation/feedforwardnn.png)
+*From: https://www.learnopencv.com/understanding-feedforward-neural-networks/*
+First and foremost, a feed forward neural network, with single layer perceptron, consist of a single node. The inputs is fed directly to the node then the output is the product of the weight and inputs summed with the bias. The output may then passed to an activation functions, e.g ReLU where values below zero are zeroed and the others are maintained.
+
+A quantum neural network, refers to a quantum circuit with trainable parameters. This viewpoint of quantum computation goes by, variational quantum circuits. With this we can finally define a quantum neural network, variational quantum circuit, as a parameterized quantum circuit that can be optimized by training the parameters of the quantum circuit, which are qubit rotations and the measurement of this circuit will approximate the quantity of interest - i.e. the label for the machine learning task. In this case a parameterised quantum circuit is one which has parameters in form of angle of rotation of the gates to specific qubits.
+
+
+
 @Rodney this paragraph is very confusing. I think start by saying what a feedforward model is, then how a variational model maps data to hilbert space, applies a parameterised model, then measures to classify. etc.
 Many quantum machine learning models try to mimic feed-forward networks. Similar to the classical counterparts, a quantum structure takes inputs from one layer of quantum gate operations, and passes those inputs onto another layer of quantum gate operations. This layer of qubits evaluates this information and passes on the output to the next layer, evolving the state of the qubit. Eventually the path leads to the final layer of qubits. @Rodney - I tried to reword this, but I actually dont think this is correct. Please read up on what a quantum neural network is and try explain it in a very simple way. Like a 1 layer NN for example. And please explain what a parameterised quantum circuit is.
 
