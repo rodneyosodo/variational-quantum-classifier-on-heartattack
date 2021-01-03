@@ -76,7 +76,7 @@ def assign_label(self, bit_string):
     else:
         return self.class_labels[0]
 ```
-7.  We create another function that returns the probability distribution over the model classes  @Rodney why?? You need to explain these steps to help people understand more.
+1.  We create another function that returns the probability distribution over the model classes. @Rodney why?? You need to explain these steps to help people understand more.
 ```python
 def return_probabilities(self, counts):
     """
@@ -93,7 +93,7 @@ def return_probabilities(self, counts):
         result[label] += counts[key] / shots
     return result
 ```
-8.   Finally, we create a function that classifies our data. It takes in data and parameters. For every data point in the dataset we assign the parameters to the feature map and the parameters to the variational circuit. We then evolve our system and store the quantum circuit. We measure each circuit and return the probabilities based on the bit string and class labels  @Rodney please explain more why we store multiple circuits
+8.   Finally, we create a function that classifies our data. It takes in data and parameters. For every data point in the dataset we assign the parameters to the feature map and the parameters to the variational circuit. We then evolve our system and store the quantum circuit. We store the circuits so as to run them at once at the end. We measure each circuit and return the probabilities based on the bit string and class labels  @Rodney please explain more why we store multiple circuits
 ```python
 def classify(self, x_list, params):
     """
@@ -140,7 +140,7 @@ ZZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.14359757088670677
 ZFeatureMap(4, reps=2) COBYLA(maxiter=50) vdepth 5 : Cost: 0.1460568741051525
 ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.14830080135566964
 ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.14946706294763648
-ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414}
+ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414
 ```
 
 @Rodney you need to elaborate more here. This is the most important part of the entire project
