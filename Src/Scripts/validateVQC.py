@@ -226,15 +226,14 @@ class Benchmark:
         return self.cost_list
 
 
-def normalize_data(dataPath="../../Data/Processed/winedata.csv"):
+def normalize_data(dataPath = "../../Data/Processed/iris_csv.csv"):
     """
     Normalizes the data
-    :return X_train, X_test, Y_train, Y_test:
     """
     # Reads the data
     data = pd.read_csv(dataPath)
     data = shuffle(data, random_state=42)
-    X, Y = data[['alcohol', 'flavanoids', 'color_intensity', 'proline']].values, data['target'].values
+    X, Y = data[['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']].values, data['target'].values
     # normalize the data
     scaler = MinMaxScaler(feature_range=(-2 * np.pi, 2 * np.pi))
     X = scaler.fit_transform(X)
@@ -257,7 +256,7 @@ def main():
                 data_list = "{} {} vdepth {}".format(fe, opt, i)
                 data[data_list] = test_benchmark.get_cost_list()
 
-    w = csv.writer(open("../../Data/Processed/costs.csv", "w"))
+    w = csv.writer(open("../../Data/Processed/iriscost.csv", "w"))
     for key, val in data.items():
         w.writerow([key, val])
 
