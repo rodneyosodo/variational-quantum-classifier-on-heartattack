@@ -62,7 +62,7 @@ Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exa
 - THAL (3 = normal; 6 = fixed defect; 7 = reversable defect)
 - num ==> TARGET (1 or 0)
 
-When we look at the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will also need to fix this later on. This is because a dtype `object` can't be understood by our model. As our model only understands numerical values e.g float and integers. (@Rodney - please explain why)
+When we look at the head of the data we see some missing values labeled `?`. We will try and fix this later. We proceed and check the info of the data and see most columns are under dtype `object` instead of `float64`. We will also need to fix this later on. This is because a dtype `object` can't be understood by our model. As our model only understands numerical values e.g float and integers. (@Rodney - please explain why. I have explained)
 
 When we check the unique values of each column, 
 ```python
@@ -100,7 +100,7 @@ This pairplot shows us the distribution of every class.
 ```python
 data = data.rename(columns={'num       ':'num'})
 ```
-2. When we check the values we see that the null values were recorded as `?` in the dataset. One way of handling this is to change the `?` in the data to be `np.Nan`. (@Rodney - maybe just say this is one way to handle this problem)
+2. When we check the values we see that the null values were recorded as `?` in the dataset. One way of handling this is to change the `?` in the data to be `np.Nan`. (@Rodney - maybe just say this is one way to handle this problem. Done ✅)
 
 ```python
 def fix_missing_values(df):
@@ -135,12 +135,12 @@ def change_dtype(df):
 4. Fixing mixing values:
 Handling missing data in Machine Learning is important as it may lead to drawing inaccurate inference from the data.
 
-We will delete the columns with more than half of its members empty. This is because if we try and fill them most of the values will be having more fabricated values than the real values. (@Rodney - why? You need to explain these design choices with just a sentence or so)
+We will delete the columns with more than half of its members empty. This is because if we try and fill them most of the values will be having more fabricated values than the real values. (@Rodney - why? You need to explain these design choices with just a sentence or so. Done ✅)
 - ca
 - thal
 - slope
 
-Columns that have continuous values and the null values are not less than half, we try and fix this by either replacing with the mean, mode or median. For our case I used mean values. (@Rodney I dont understand what this means)
+Columns that have continuous values and the null values are not less than half, we try and fix this by either replacing with the mean, mode or median. For our case I used mean values. (@Rodney I dont understand what this means. I have tried to rewrite ✅)
 - trestbps
 - chol
 - thalach
@@ -192,7 +192,7 @@ data.drop_duplicates(inplace=True)
 
 ## Profiling
 One way of doing better and faster Exploratory Data Analysis in a very short time is to use pandas profiling. It basically returns and interactive report in HTML format which is quick to analyse the data.
-@Rodney maybe explain what profiling is, in a sentence or two?
+@Rodney maybe explain what profiling is, in a sentence or two? Done ✅
 
 We first check the correlation of the columns to the target variable:
 ```python
@@ -204,7 +204,7 @@ data.drop('num', axis=1).corrwith(data['num']).plot(kind='bar', grid=True, figsi
 
 We see that exang has the highest prositive correlation followed by oldpeak and then cp. Thalach has the highest negative correlation.
 
-Based on the correlation of the features with the target variable, we chose the first 4 positively highly correlated features. (@Rodney this is a very bold statement to make. Maybe state "looking at the correlations, these 4 variables seem to be the most relevant and hence, we choose them as our features for our analysis")
+Based on the correlation of the features with the target variable, we chose the first 4 positively highly correlated features. (@Rodney this is a very bold statement to make. Maybe state "looking at the correlations, these 4 variables seem to be the most relevant and hence, we choose them as our features for our analysis" Done ✅)
 
 We finish off by checking the pandas profiling:
 
