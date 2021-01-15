@@ -32,40 +32,39 @@ In general, there are three steps to this type of quantum machine learning model
 3. Measurement
 
 ### 1. Data encoding/state preparation
-When we want to encode our classical data into quantum states, we perform certain operations to help us work with the data in quantum circuits. One of the steps is called data embedding which is the representation of classical data as a quantum state in Hilbert space via a quantum feature map. A feature map is a mathematical mapping that helps us embed our data into (usually) higher dimensional spaces, or in this case, quantum states. It can be thought of as a variational quantum circuit in which the parameters depend on the input data which for our case is the classical heart attack data. We will need to define a variational quantum circuit before going any further. A variational quantum circuit is a quantum algorithm that depends on parameters and can be optimised by either classical or quantum methods.
+When we want to encode our classical data into quantum states, we perform certain operations to help us work with the data in quantum circuits. One of the steps is called data embedding which is the representation of classical data as a quantum state in Hilbert space via a quantum feature map. A feature map is a mathematical mapping that helps us embed our data into (usually) higher dimensional spaces, or in this case, quantum states. It can be thought of as a variational quantum circuit in which the parameters depend on the input data, which for our case is the classical heart attack data. We will need to define a variational quantum circuit before going any further. Recall that a variational quantum circuit depends on parameters that can be optimised by classical methods.
 
-@Rodney I dont understand this sentence below. Please re-write. Done ✅
-For embedding we take out classical datapoint, $x$ and make it into a set of gate parameters in a quantum circuit hence creating out desirable quantum state.
+For embedding we take a classical data point, $x$, and encode it by applying a set of gate parameters in the quantum circuit where gate operations depend on the value of $x$, hence creating the desired quantum state:
 $x \rightarrow \left| \psi_x \right\rangle $
+
 Here are some examples of well known data embedding methods:
 
 ##### a) Basis embedding
-In this method, we simply encode our data into binary strings. We convert each input to a computational basis state of a qubit system. For example ${x = 1001}$ is represented by a 4 qubit system as the quantum state $\left| 1001 \right\rangle$. Basis embedding offers: (@Rodney it is what? Done ✅)
+In this method, we simply encode our data into binary strings. We convert each input to a computational basis state of a qubit system. For example ${x = 1001}$ is represented by a 4 qubit system as the quantum state $\left| 1001 \right\rangle$. Some points to consider on basis embedding are: 
 - amplitude vectors become sparse
-- most freedom to do computation
-- schemes not efficient (@Rodney please reference! Done ✅)
+- there is a lot of freedom to do computation
+- schemes to implement it are usually not efficient 
 
 ![](../Notes/explanation/math-8.png)
 
 ##### b) Amplitude embedding
-We encode the data as amplitudes of a quantum state. A normalized classical N - dimensional datapoint ${x}$ is represented by the amplitudes of a n-qubit quantum state $\left| \phi ( x)\right\rangle$ as 
+Here, we encode the data as amplitudes of a quantum state. A normalized classical N - dimensional datapoint ${x}$ is represented by the amplitudes of a n-qubit quantum state $\left| \phi ( x)\right\rangle$ as 
 ![](../Notes/explanation/math-11.png)
 
 
 For example
 ![](../Notes/explanation/math-12.png)
 
-This is method is simple and intuitive.
-
-@Rodney not necessarily true - can be expensive in gate cost to implement the right amplitudes! Removed ✅
+This is method is intuitive but schemes to implement it are also rather complicated.
 
 ##### c) Angle embedding
-Here, we use the so-called angle encoding. We encode classical informartion into angle rotations of a qubit. This results to using the feature values of an input data point, x, as angles in a unitary quantum gate. @Rodney - huh? What does this sentence mean? Rewrote ✅
+Here, we use the so-called angle encoding. We encode classical information into angle rotations of a qubit. This results to using the feature values of an input data point, x, as angles in a unitary quantum gate.
 
 #### Feature maps
 Feature maps allow you to map data into a higher dimensional space. The input data is encoded in a quantum state via a quantum
-feature map, a nonlinear feature map that maps data to the quantum Hilbert space. A quantum computer can analyse the input data in this feature space, where a classifier can gain power in finding a hyperplane to separate the data.
- (@Rodney are you sure? please reference. Removed ✅). Feature maps encode our classical data $x_i$ into quantum states $\left|\phi(x_i)\right\rangle$. (@Rodney No. This is not right. What are you trying to say here? Rewrote ✅). We use three different types of featuremaps precoded in the Qiskit circuit library, namely ZZFeaturemap, ZFeaturemap and PauliFeaturemap. We varied the depths of these featuremaps (1, 2, 4) in order to check the different models' performance.
+feature map, an encoding strategy that maps data to quantum Hilbert space. A quantum computer can analyse the input data in this feature space, where a classifier aims to find a hyperplane to separate the data. 
+
+Feature maps encode our classical data $x_i$ into quantum states $\left|\phi(x_i)\right\rangle$. In this analysis, we use three different types of featuremaps precoded in the Qiskit circuit library, namely ZZFeaturemap, ZFeaturemap and PauliFeaturemap. We varied the depths of these featuremaps (1, 2, 4) in order to check the different models' performance. By increasing a feature map's depth, we introduce more entanglement into the model and repeat the encoding circuit.
 ![Pauli feature map](../Output/Figures/PauliFeaturemap.png)
 *Pauli feature map*
 
@@ -76,18 +75,18 @@ feature map, a nonlinear feature map that maps data to the quantum Hilbert space
 *Z feature map*
 
 ### 2. Model circuit
-The second step is the model circuit, or the classifier strictly speaking. A parameterised unitary operator $U (\theta)$ is created such that $\left| \psi(x: \theta)\right\rangle = U(\theta) \left| \psi(x)\right\rangle$ . The model circuit is constructed from gates that evolve the input state. The circuit is based on unitary operations and depends on external parameters which will be adjustable. Given a prepared state $\left| \psi_i\right\rangle$ the model circuit, $U (w)$ maps $\left| \psi_i\right\rangle$ to another vector $\left| \psi_i\right\rangle = U(w)\left| \psi_i\right\rangle$.  In turn $U(w)$ consists of a series of unitary gates.
+The second step is the model circuit, or the classifier strictly speaking. A parameterised unitary operator $U(w)$ is created such that $\left| \psi(x: \theta)\right\rangle = U(w) \left| \psi(x)\right\rangle$ . The model circuit is constructed from gates that evolve the input state. The circuit is based on unitary operations and depends on external parameters which will be adjustable. Given a prepared state $\left| \psi_i\right\rangle$ the model circuit, $U(w)$ maps $\left| \psi_i\right\rangle$ to another vector $\left| \psi_i\right\rangle = U(w)\left| \psi_i\right\rangle$.  In turn $U(w)$ consists of a series of unitary gates.
 
-We used the RealAmplitudes variational circuit from Qiskit for this:
+We used the RealAmplitudes variational circuit from Qiskit for this. Increasing the depth of the variational circuit introduces more trainable parameters into the model.
 
 ![Real Amplitudes](../Output/Figures/RealAmplitudes.png)
 *Real Amplitudes*
 
 
 ### 3. Measurement
-The final step is the measurement step, which estimates the probability of belonging to a class by performing several measurements. It’s the equivalent of sampling multiple times from the distribution over all possible computational basis states.
+The final step is the measurement step, which estimates the probability of belonging to a class by performing certain measurements. It’s the equivalent of sampling multiple times from the distribution of possible computational basis states and obtaining an expectation value.
 
-For demonstartion purposes I made some design considerations. I chose the final circuit to have `ZZFeatureMap` with a depth of 1 and a variational form `RealAmplitudes` with a depth of 1. This is to make a simple demonstartion on how the model works. (@Rodney please explain to the reader how you chose this final circuit. Done ✅)
+For demonstration purposes I made some design considerations. I chose the final circuit to have `ZZFeatureMap` with a depth of 1 and a variational form `RealAmplitudes` with a depth of 1. This is to make a simple illustration of how the full model works. 
 
 *Overall circuit*
 ![Overall circuit](../Output/Figures/overallcircuit.png)
@@ -96,21 +95,18 @@ For demonstartion purposes I made some design considerations. I chose the final 
 #### Training
 As alluded to above, during training we aim to find the values of parameters to optimise a given loss function. We can perform optimisation on a quantum model similar to how it is done on a classical neural network. In both cases, we perform a forward pass of the model and calculate a loss function. We can then update our trainable parameters using gradient based optimisation methods since the gradient of a quantum circuit is possible to compute. During training we use the mean squared error (MSE) as loss function. This allows us to find a distance between our predictions and the truth, captured by the value of the loss function.![](../Notes/explanation/math-24.png)
 
-We will train our model using ADAM, COBYLA and SPSA optimizers. @Rodney references Done ✅
+We will train our model using ADAM, COBYLA and SPSA optimizers. Below is a brief explanation of these optimizers, but I encourage you to read a bit further on their pros/cons.
 
 ##### 1. ADAM
-Known as the Adaptive Moment Estimation Algorithm, but abbreviated ADAM. This algorithm simply estimates moments of the loss and uses them to optimize a function. It is essentially a combination of the gradient descent with momentum algorithm and the RMS (Root Mean Square) Prop algorithm. The ADAM algorithm calculates an exponentially weighted moving average of the gradient and then squares the calculated gradient. This algorithm has two decay parameters that control the decay rates of these calculated moving averages.
+Known as the Adaptive Moment Estimation Algorithm, but abbreviated ADAM. This optimizer simply estimates moments of the loss and uses them to optimize the loss function. It is essentially a combination of gradient descent with a momentum algorithm and the RMS (Root Mean Square) Prop algorithm. The ADAM algorithm calculates an exponentially weighted moving average of the gradient and then squares the calculated gradient. This algorithm has two decay parameters that control the decay rates of these calculated moving averages.
 
 ##### 2. COBYLA
-Known as Constrained Optimization by Linear Approximations. It constructs successive linear approximations of the objective function and constrains via a simplex of n+1 points (in n dimensions), and optimizes these approximations in a trust region at each step. COBYLA supports equality constraints by transforming them into two inequality constraints. 
+Known as Constrained Optimization by Linear Approximations. It constructs successive linear approximations of the loss function and constrains via a simplex of n+1 points (in n dimensions), and optimizes these approximations in a trust region at each step. COBYLA supports equality constraints by transforming them into two inequality constraints. 
 
-##### 3. SPSA  @Rodney - this is just copied exactly from a paper! This is plagiarism! You have to rewrite in your OWN WORDS and reference the paper! Done ✅
-"SPSA uses only the objective function measurements. This contrasts with algorithms requiring direct measurements of the gradient of the objective function. SPSA is especially efficient in high-dimensional problems in terms of providing a good solution for a relatively small number of measurements of the objective function. The essential feature of SPSA, which provides its power and relative ease of use in difficult multivariate optimization problems, is the underlying gradient approximation that requires only two objective function measurements per iteration regardless of the dimension of the optimization problem. These two measurements are made by simultaneously varying in a "proper" random fashion all of the variables in the problem (the "simultaneous perturbation"). This contrasts with the classical ("finite-difference") method where the variables are varied one at a time. If the number of terms being optimized is p, then the finite-difference method takes 2p measurements of the objective function at each iteration (to form one gradient approximation) while SPSA takes only two measurements."
+##### 3. SPSA 
+"SPSA uses only the objective function measurements. This contrasts with algorithms requiring direct measurements of the gradient of the objective function. SPSA is especially efficient in high-dimensional problems in terms of providing a good solution for a relatively small number of measurements of the objective function. The essential feature of SPSA, which provides its power and relative ease of use in difficult multivariate optimization problems, is the underlying gradient approximation that requires only two objective function measurements per iteration regardless of the dimension of the optimization problem. These two measurements are made by simultaneously varying in a "proper" random fashion all of the variables in the problem (the "simultaneous perturbation"). This contrasts with the classical ("finite-difference") method where the variables are varied one at a time. If the number of terms being optimized is p, then the finite-difference method takes 2p measurements of the objective function at each iteration (to form one gradient approximation) while SPSA takes only two measurements." (See ref 5)
 
-By now I hope you have gotten the gist of how a quantum machine learning model works. Next we will be looking at the findings that I discovered when training the model on the heart attack, iris and wine datasets.
-@Rodney - please add a short concluding paragraph saying what we discussed and what the next blog/tutorial will cover Done ✅
-
-**Lets move to the next blog: "Explaining the findings of a variational quantum model"**
+By now I hope you have gotten the gist of how a quantum machine learning model works as well as an overview of some optimizers. Next we will look at the findings that I discovered when training the model on the heart attack data as well as the popular iris and wine datasets.
 
 **The code can be found at [code](https://github.com/0x6f736f646f/variational-quantum-classifier-on-heartattack)**
 
