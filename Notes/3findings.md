@@ -1,36 +1,25 @@
-# Variational Quantum Classifier
+# An analysis of the variational quantum classifier using data
 
-By now you know how a variational quantum classifier works. The code for the previous series is at [Github repo](https://github.com/0x6f736f646f/variational-quantum-classifier-on-heartattack)
+By now you should know how a variational quantum classifier works. The code for the previous series is at [Github repo](https://github.com/0x6f736f646f/variational-quantum-classifier-on-heartattack)
 
 
 ## Introduction
-In binary classification, let's say labelling if someone is likely to have a heart attack or not, we would build a function that takes in the information about the patient and gives results aligned to the reality. E.g, $f(information) = P(hear attack = YES)$. This probabilistic classification is well suited for quantum computing and we would like to build a quantum state $\left| \psi \right\rangle$ such that $\left| \psi(information)\right\rangle = P(heart attack = YES) \left| 0\right\rangle + P(heart attack = NO) \left| 1\right\rangle$. We then compute the outcome via quantum measurement. By optimising the circuits you then find parameters that will give the closest probability to the reality. 
+In binary classification, let's say labelling if someone is likely to have a heart attack or not, we would build a function that takes in the information about the patient and gives results aligned to the reality. E.g, $f(information) = P(hear attack = YES)$. This probabilistic classification is well suited for quantum computing and we would like to build a quantum state that, when measured and post processed, returns $P(hear attack = YES)$. By optimising the circuits, you then find parameters that will give the closest probability to the reality based on training data. 
 
 ## Problem statement
-Given a dataset about patient's information, can we predict if the patient is likely to have a heart attack or not? This is a binary classification problem, with an input real vector ${x}$ and a binary output ${y}$ in $\{0, 1\}$. We want to build a quantum circuit whose output is the quantum state: 
+Given a dataset about patients' information, can we predict if the patient is likely to have a heart attack or not? This is a binary classification problem, with a real input vector ${x}$ and a binary output ${y}$ in $\{0, 1\}$. We want to build a quantum circuit whose output is the quantum state: 
 ![](../Notes/findings/math-7.png)
 
-## Procedure
-This is achieved by designing a quantum circuit that behaves similarly to a traditional machine learning algorithm. The quantum machine learning algorithm contains a circuit which depends on a set of parameters that, through training, will be optimised to reduce the value of a loss function.
-
-![VQC Structure](../Notes/explanation/vqc.png)
-*From swissquantumhub*
-
-The proposed algorithm is composed of 3 steps:
-1. State preparation
-2. Model circuit
-3. Measurement
-
-Implementation
-1. We initialise our circuit with Zero state and multiply it with number of qubits
+## Implementation
+1. We initialise our circuit in the zero state (all qubits in state zero)
 ```python
 self.sv = Statevector.from_label('0' * self.no_qubit)
 ```
-2. We use a higher order feature map, `ZZFeaturemap, ZFeaturemap` and `PauliFeaturemap` and specify the number of qubits and also how many repetitions we want: 1, 3, 5.
+2. We use a feature map such as, `ZZFeaturemap, ZFeaturemap` or `PauliFeaturemap` and choose the number of qubits based on the input dimension of the data and how many repetitions (i.e. the circuit depth) we want. We use 1, 3, 5.
 
-3. We specify the variational form as `RealAmplitudes` and specify the number of qubits and also how many repetitions we want: 1, 2, 4.
+3. We choose the variational form as `RealAmplitudes` and specify the number of qubits as well as how many repetitions we want. We use 1, 2, 4 to have models with an increasing number of trainable parameters.
 
-4. We then combine our feature map to the variational quantum circuit.
+4. We then combine our feature map to the variational circuit.
 `ZZfeaturemap and RealAmplitudes both with a depth of 1`
 ```python
 def prepare_circuit(self):
@@ -40,7 +29,7 @@ def prepare_circuit(self):
     """
     self.circuit = self.feature_map.combine(self.var_form)
 ```
-5. We create a function that associates the parameters of the feature map with the data and the parameters of the variational circuit with the parameters passed
+5. We create a function that associates the parameters of the feature map with the data and the parameters of the variational circuit with the parameters passed. This is to ensure in Qiskit that the right variables in the circuit are associated with the right quantities.
 ```python
 def get_data_dict(self, params, x):
     """
