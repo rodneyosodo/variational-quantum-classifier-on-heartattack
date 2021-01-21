@@ -35,7 +35,8 @@ In general, there are three steps to this type of quantum machine learning model
 When we want to encode our classical data into quantum states, we perform certain operations to help us work with the data in quantum circuits. One of the steps is called data embedding which is the representation of classical data as a quantum state in Hilbert space via a quantum feature map. A feature map is a mathematical mapping that helps us embed our data into (usually) higher dimensional spaces, or in this case, quantum states. It can be thought of as a variational quantum circuit in which the parameters depend on the input data, which for our case is the classical heart attack data. We will need to define a variational quantum circuit before going any further. Recall that a variational quantum circuit depends on parameters that can be optimised by classical methods.
 
 For embedding we take a classical data point, $x$, and encode it by applying a set of gate parameters in the quantum circuit where gate operations depend on the value of $x$, hence creating the desired quantum state:
-$x \rightarrow \left| \psi_x \right\rangle $
+
+![](../Notes/explanation/math-5.png)
 
 Here are some examples of well known data embedding methods:
 
@@ -75,7 +76,13 @@ Feature maps encode our classical data $x_i$ into quantum states $\left|\phi(x_i
 *Z feature map*
 
 ### 2. Model circuit
-The second step is the model circuit, or the classifier strictly speaking. A parameterised unitary operator $U(w)$ is created such that $\left| \psi(x: \theta)\right\rangle = U(w) \left| \psi(x)\right\rangle$ . The model circuit is constructed from gates that evolve the input state. The circuit is based on unitary operations and depends on external parameters which will be adjustable. Given a prepared state $\left| \psi_i\right\rangle$ the model circuit, $U(w)$ maps $\left| \psi_i\right\rangle$ to another vector $\left| \psi_i\right\rangle = U(w)\left| \psi_i\right\rangle$.  In turn $U(w)$ consists of a series of unitary gates.
+The second step is the model circuit, or the classifier strictly speaking. A parameterised unitary operator $U(w)$ is created such that 
+
+![](../Notes/explanation/math-16.png)
+
+$\left| \psi(x: \theta)\right\rangle = U(w) \left| \psi(x)\right\rangle$ .
+
+The model circuit is constructed from gates that evolve the input state. The circuit is based on unitary operations and depends on external parameters which will be adjustable. Given a prepared state $\left| \psi_i\right\rangle$ the model circuit, $U(w)$ maps $\left| \psi_i\right\rangle$ to another vector $\left| \psi_i\right\rangle = U(w)\left| \psi_i\right\rangle$.  In turn $U(w)$ consists of a series of unitary gates.
 
 We used the RealAmplitudes variational circuit from Qiskit for this. Increasing the depth of the variational circuit introduces more trainable parameters into the model.
 

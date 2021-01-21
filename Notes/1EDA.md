@@ -1,7 +1,7 @@
 # My Quantum Open Source Foundation Project
 Hello world, I'm Rodney Osodo. An undergrad student at Jomo Kenyatta University of Agriculture and Technology in Kenya. I've been interested in quantum computing for a while now and am so excited to share my learnings from my most recent experience with quantum computing.
 
-This is my quantum open source foundation project on building a quantum variational classifier using a heart attack dataset. The purpose of this project was to help me gain insight into the actual construction of a quantum model, applied to real data. By sharing these insights, I hope to help many of you undersand and learn much of the dynamics accompanied with quantum machine learning, which I grasped whilst doing this project. This will be a series of blogs in the order of:
+This is my quantum open source foundation project on building a quantum variational classifier using a heart attack dataset. The purpose of this project was to help me gain insight into the actual construction of a quantum model, applied to real data. By sharing these insights, I hope to help many of you understand and learn much of the dynamics accompanied with quantum machine learning, which I grasped whilst doing this project. This will be a series of blogs in the order of:
 1. Classical preprocessing of data, `this one`
 2. Explaining the workings of a variational quantum model
 3. Explain my finds and look at the best models
@@ -10,10 +10,10 @@ This is my quantum open source foundation project on building a quantum variatio
 Ultimately, we will:
 - Learn how a variational circuit works
 - Explore the different types of optimizers in Qiskit
-- Get a firmer understaning of quantum machine learning (hopefully!)
+- Get a firmer understaning of quantum machine learning (hopefully! 😁)
 
 My project plan is to:
-1. Explore a specific dataset and preprocess it. For this project, we decided to use the heart attack data as our baseline. This is because, in medical aspects, heart attack is the leading disease that causes death. In computation aspect, the data was rather small and could easily be fitted on NISQ computers.
+1. Explore a specific dataset and preprocess it. For this project, we decided to use the heart attack data as our baseline. This is because, in medical aspects, heart attack is the leading disease that causes death. In computation aspect, the data was rather small and could easily be fitted on NISQ computers. We also used the iris dataset and wine datasets for validation.
 2. Create a quantum neural network (AKA variational classifier) by combining a featuremap, variational circuit and measurement component (don't worry, I will explain what these components mean in detail).
 3. Explore different types of optimizers, featuremaps, depths of featuremaps and depths of the variational circuit.
 4. Explain my observations based on the best 10 model configurations.
