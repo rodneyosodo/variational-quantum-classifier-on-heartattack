@@ -4,10 +4,21 @@ By now you should know how a variational quantum classifier works. The code for 
 
 
 ## Introduction
-In binary classification, let's say labelling if someone is likely to have a heart attack or not, we would build a function that takes in the information about the patient and gives results aligned to the reality. E.g, $f(information) = P(hear attack = YES)$. This probabilistic classification is well suited for quantum computing and we would like to build a quantum state that, when measured and post processed, returns $P(hear attack = YES)$. By optimising the circuits, you then find parameters that will give the closest probability to the reality based on training data. 
+In binary classification, let's say labelling if someone is likely to have a heart attack or not, we would build a function that takes in the information about the patient and gives results aligned to the reality. E.g,
+
+![](../Notes/findings/math-1.png)
+
+This probabilistic classification is well suited for quantum computing and we would like to build a quantum state that, when measured and post processed, returns
+
+![](../Notes/findings/math-3.png)
+
+$P(hear attack = YES)$.
+ 
+By optimising the circuits, you then find parameters that will give the closest probability to the reality based on training data. 
 
 ## Problem statement
 Given a dataset about patients' information, can we predict if the patient is likely to have a heart attack or not? This is a binary classification problem, with a real input vector ${x}$ and a binary output ${y}$ in $\{0, 1\}$. We want to build a quantum circuit whose output is the quantum state: 
+
 ![](../Notes/findings/math-7.png)
 
 ## Implementation
@@ -50,7 +61,7 @@ def get_data_dict(self, params, x):
 ![](../Output/Figures/parameterisedcircuit.png)
 
 
-6. We create another function that checks the parity of the bit string passed. Hence if the parity is even it returns a yes and if the parity is odd it returns a no @Rodney please explain why this choice and that other options exist
+1. We create another function that checks the parity of the bit string passed. Hence if the parity is even it returns a yes and if the parity is odd it returns a no. We chose this since we have 2 classes and parity check either returns true or false for a given bitstring. There are also other methods e.g for 3 classes you might choose maximum, minimum or convert the bistring to a number and pass is through an activation function. Therefore, for our case, a bitstring with an even parity returns yes. @Rodney please explain why this choice and that other options exist
 ```python
 def assign_label(self, bit_string):
     """
@@ -65,7 +76,7 @@ def assign_label(self, bit_string):
     else:
         return self.class_labels[0]
 ```
-1.  We create another function that returns the probability distribution over the model classes. @Rodney why?? You need to explain these steps to help people understand more.
+1.  We create another function that returns the probability distribution over the model classes. After measuring the quantum circuits for every data point, we combine all the measurements and check the number of times which the model predicted yes or no. @Rodney why?? You need to explain these steps to help people understand more.
 ```python
 def return_probabilities(self, counts):
     """
@@ -131,8 +142,9 @@ ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.14830080135566964
 ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.14946706294763648
 ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414
 ```
-
+From the resulted, ZFeatureMap with a depth of 2, variational depth of 5 and using SPSA optimizer achieved the lowest cost. This shows us that the feature map which resulted in a lower cost function generally was ZFeatureMap. But does this mean that ZFeaturemap typically performs better than other Featuremaps we tested? We will try and answer this.
 @Rodney you need to elaborate more here. This is the most important part of the entire project
+
 ## Questions
 #### 1. Does increasing variational depth increase convergence?
 - When increasing vdepth on `ZZFeatureMap(4, reps=1) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) ADAM(maxiter=50)` and `PauliFeatureMap(4, reps=2) ADAM(maxiter=50)` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
@@ -140,7 +152,44 @@ ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414
 #### 2. Does increasing featuremap depth increase convergence?
 - When increasing fdepth on `ZZFeatureMap ADAM (maxiter=50) vdepth 5` and `PauliFeatureMap ADAM(maxiter=50) vdepth 5` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
 
+#### 2. How does the models generalize on different datasets.
+- We benchmarked these results on iris dataset and wine dataset and here were our best models for each.
+
+**Iris dataset**
+```python
+PauliFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 3 : Cost: 0.18055905629600544
+ZZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 5 : Cost: 0.18949957468013437
+ZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 5 : Cost: 0.18975231416858743
+ZZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.1916829328746686
+ZZFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 3 : Cost: 0.19264230430490895
+ZZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 3 : Cost: 0.19356269726482855
+ZFeatureMap(4, reps=4) COBYLA(maxiter=50) vdepth 1 : Cost: 0.19415440209151674
+ZZFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 5 : Cost: 0.19598553766368446
+ZFeatureMap(4, reps=2) COBYLA(maxiter=50) vdepth 1 : Cost: 0.19703058320810934
+ZFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 3 : Cost: 0.19970277845347006
+```
+**Wine dataset**
+```python
+PauliFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.1958180042610037
+PauliFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.1962278498243972
+PauliFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 3 : Cost: 0.20178754496022344
+ZZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 1 : Cost: 0.20615090555639448
+PauliFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 1 : Cost: 0.20621624103441463
+ZZFeatureMap(4, reps=2) COBYLA(maxiter=50) vdepth 1 : Cost: 0.20655139975269518
+PauliFeatureMap(4, reps=2) COBYLA(maxiter=50) vdepth 1 : Cost: 0.20655139975269518
+ZZFeatureMap(4, reps=2) COBYLA(maxiter=50) vdepth 1 : Cost: 0.20655139975269518
+PauliFeatureMap(4, reps=2) COBYLA(maxiter=50) vdepth 1 : Cost: 0.20655139975269518
+ZFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 5 : Cost: 0.20674662980116945
+ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.2076046292803965
+ZZFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 5 : Cost: 0.20892451316076094
+```
+
+As we can clearly see our models were not good at generalising.
+In order to be able to ensure the reliability of machine learning algorithms, we need to be able to estimate useful generalization bounds. This is an open problem to which traditional approaches fail to provide an answer.
+
 
 @Rodney, you should also start with a nice motivation in the first notebook as to why we used heart attack data
 ## Conclusion
 Heart attack is a major concern in public health, therefore several research efforts have been conducted including topics that are addressed using statistics and data mining. Every year more data is becoming available from the increased diagnosis rate. The data availability has lead to the emergence of machine learning methods, which are nowadays an extremely valuable tool for healthcare professionals to make and understand diagnoses and mitigate risks. In general, VQC results demonstrate that it is a promising technique when quantum devices grow in its capabilities, attending the future necessities of the healthcare system.
+
+We are now at the finishing line. We come so far and there is also more to cover. Hopefully you have understood the pipeline of training a quantum machine learning algorithm using real world data. Thank you for your audience and thanks to [Amira Abbas](https://scholar.google.com/citations?user=-v3wO_UAAAAJ) for co-authoring it. 
