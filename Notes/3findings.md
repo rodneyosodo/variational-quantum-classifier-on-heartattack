@@ -61,7 +61,7 @@ def get_data_dict(self, params, x):
 ![](../Output/Figures/parameterisedcircuit.png)
 
 
-1. We create another function that checks the parity of the bit string passed. Hence if the parity is even it returns a yes and if the parity is odd it returns a no. We chose this since we have 2 classes and parity check either returns true or false for a given bitstring. There are also other methods e.g for 3 classes you might choose maximum, minimum or convert the bistring to a number and pass is through an activation function. Therefore, for our case, a bitstring with an even parity returns yes. @Rodney please explain why this choice and that other options exist
+6. We create another function that checks the parity of the bit string passed. If the parity is even, it returns a 'yes' label and if the parity is odd it returns a 'no' label. We chose this since we have 2 classes and parity checks either returns true or false for a given bitstring. There are also other methods e.g for 3 classes you might convert the bistring to a number and pass is through an activation function. Or perhaps interpret the expectation values of a circuit as probabilities. The important thing to note is that there are multiple ways to assign labels from the output of a quantum circuit and you need to justify why or how you do this. In our case, the parity idea was originally motivated in this very nice paper (https://arxiv.org/abs/1804.11326) and the details are contained therein.
 ```python
 def assign_label(self, bit_string):
     """
@@ -76,7 +76,7 @@ def assign_label(self, bit_string):
     else:
         return self.class_labels[0]
 ```
-1.  We create another function that returns the probability distribution over the model classes. After measuring the quantum circuits for every data point, we combine all the measurements and check the number of times which the model predicted yes or no. @Rodney why?? You need to explain these steps to help people understand more.
+7.  Now we create a function that returns the probability distribution over the model classes. After measuring the quantum circuit multiple times (i.e. with multiple shots), we aggregate the probabilites associated with 'yes' and 'no' respectively, to get probabilities for each label.
 ```python
 def return_probabilities(self, counts):
     """
@@ -93,7 +93,7 @@ def return_probabilities(self, counts):
         result[label] += counts[key] / shots
     return result
 ```
-8.   Finally, we create a function that classifies our data. It takes in data and parameters. For every data point in the dataset we assign the parameters to the feature map and the parameters to the variational circuit. We then evolve our system and store the quantum circuit. We store the circuits so as to run them at once at the end. We measure each circuit and return the probabilities based on the bit string and class labels  @Rodney please explain more why we store multiple circuits
+8.   Finally, we create a function that classifies our data. It takes in data and parameters. For every data point in the dataset we assign the parameters to the feature map and the parameters to the variational circuit. We then evolve our system and store the quantum circuit. We store the circuits so as to run them at once at the end. We measure each circuit and return the probabilities based on the bit string and class labels.
 ```python
 def classify(self, x_list, params):
     """
@@ -129,7 +129,7 @@ qiskit-ignis==0.5.1
 qiskit-terra==0.16.1
 ```
 
-Every combination of the experiments were executed with 1024 shots, using the implemented version of the optimizers. We conducted tests with different feature map depths, variational depths and optimizers. In each case, we compared loss values. Our best configs were 
+Every combination of the experiments were executed with 1024 shots, using the implemented version of the optimizers. We conducted tests with different feature maps and depths, the RealAmplitudes variational form with differing depths and different optimizers in Qiskit. In each case, we compared the loss values after 50 training iterations on the training data. Our best model configs were 
 ```python
 ZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 5 : Cost: 0.13492279429495616
 ZFeatureMap(4, reps=2) SPSA(max_trials=50) vdepth 3 : Cost: 0.13842958846394343
@@ -142,18 +142,17 @@ ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 3 : Cost: 0.14830080135566964
 ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.14946706294763648
 ZFeatureMap(4, reps=1) COBYLA(maxiter=50) vdepth 3 : Cost: 0.15447151389989414
 ```
-From the resulted, ZFeatureMap with a depth of 2, variational depth of 5 and using SPSA optimizer achieved the lowest cost. This shows us that the feature map which resulted in a lower cost function generally was ZFeatureMap. But does this mean that ZFeaturemap typically performs better than other Featuremaps we tested? We will try and answer this.
-@Rodney you need to elaborate more here. This is the most important part of the entire project
+From the results, the ZFeatureMap with a depth of 2, RealAmplitudes variational form with a depth of 5 and the SPSA optimizer achieved the lowest cost. These results seem to indicate that the feature map which resulted in a lower cost function generally was the ZFeatureMap. But does this mean that the ZFeaturemap typically performs better in general? 
 
 ## Questions
-#### 1. Does increasing variational depth increase convergence?
-- When increasing vdepth on `ZZFeatureMap(4, reps=1) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) SPSA(max_trials=50)`, `ZZFeatureMap(4, reps=2) ADAM(maxiter=50)` and `PauliFeatureMap(4, reps=2) ADAM(maxiter=50)` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
+#### 1. Does increasing the variational form depth increase convergence?
+- Interestingly, increasing the depth of the variational form does not seem to increase convergence of any of these models substantially. Note that increasing the variational form's depth implies introducing more trainable parameters into the model. One would naively think that more parameters in the model would allow us to model things better and capture more intricate relationships that exist in the data, but perhaps these models are simply too small to exploit any of these advantages through higher parameterisation. 
 
 #### 2. Does increasing featuremap depth increase convergence?
-- When increasing fdepth on `ZZFeatureMap ADAM (maxiter=50) vdepth 5` and `PauliFeatureMap ADAM(maxiter=50) vdepth 5` increases the convergence. The rest it doesn't achieve considerable increase in converegence. In some it actualyy reduces convergences almost linearly
+- When increasing feature map depth on `ZZFeatureMap ADAM (maxiter=50)` and `PauliFeatureMap ADAM(maxiter=50)`, this dooes increase the convergence of model training. The other model configs don't change significantly (in some, increasing the feature map depth actually reduces convergences almost linearly - why this happens could make for an interesting research project!).
 
-#### 2. How does the models generalize on different datasets.
-- We benchmarked these results on iris dataset and wine dataset and here were our best models for each.
+#### 3. How do the models generalize on different datasets?
+- As a final experiment, we benchmarked these results on the iris and wine datasets. Two popular datasets used in classical machine learning and of the same dimension of the heart attack data, hence we can also use 4 qubits to model it. This time, the best model configs were:
 
 **Iris dataset**
 ```python
@@ -184,12 +183,11 @@ ZFeatureMap(4, reps=1) SPSA(max_trials=50) vdepth 5 : Cost: 0.2076046292803965
 ZZFeatureMap(4, reps=4) SPSA(max_trials=50) vdepth 5 : Cost: 0.20892451316076094
 ```
 
-As we can clearly see our models were not good at generalising.
-In order to be able to ensure the reliability of machine learning algorithms, we need to be able to estimate useful generalization bounds. This is an open problem to which traditional approaches fail to provide an answer.
+## Discussion
+This time, our best model configs are totally different! What's fascinating about this is that the dataset used seems to demand a particular model structure. This makes sense intuitively right? Because the first step in these quantum machine learning models is to load the data and encode it into a quantum state. If we use different data, perhaps there is a different (or more optimal) data encoding strategy depending on the kind of data you have.
 
+Another thing that surprised me, especially coming from a classical ML background, is the performance of the SPSA optimizer. I would have thought something more state-of-the-at, like ADAM, would be the clear winner. This was not the case at all. It would be cool to understand why SPSA seems to well suited for optimising these quantum models.
 
-@Rodney, you should also start with a nice motivation in the first notebook as to why we used heart attack data
-## Conclusion
-Heart attack is a major concern in public health, therefore several research efforts have been conducted including topics that are addressed using statistics and data mining. Every year more data is becoming available from the increased diagnosis rate. The data availability has lead to the emergence of machine learning methods, which are nowadays an extremely valuable tool for healthcare professionals to make and understand diagnoses and mitigate risks. In general, VQC results demonstrate that it is a promising technique when quantum devices grow in its capabilities, attending the future necessities of the healthcare system.
+A final remark is that we only looked at the loss values on training data. Ultimately we would like to also see if any of these quantum models are good at generalization. A model is said to have good generalizion if it is capable of performing well on new data that it has never seen before. A proxy for this is usually the error we would get on test data. By taking the best configs here and checking their performance on test sets, we could gauge how well these toy models perform and generalize which would be pretty interesting even in these small examples!
 
-We are now at the finishing line. We come so far and there is also more to cover. Hopefully you have understood the pipeline of training a quantum machine learning algorithm using real world data. Thank you for your audience and thanks to [Amira Abbas](https://scholar.google.com/citations?user=-v3wO_UAAAAJ) for co-authoring it. 
+We are now (sadly!) at the finishing line. We have come so far and there are still many more open questions to uncover. If you are interested in any of this work, please feel free to reach out and maybe we could collaborate on something cool! Hopefully, you have understood the pipeline of training a quantum machine learning algorithm using real world data. Thank you for reading these posts and thanks to [Amira Abbas](https://scholar.google.com/citations?user=-v3wO_UAAAAJ) for mentoring me through the QOSF program. Until next time :) 
